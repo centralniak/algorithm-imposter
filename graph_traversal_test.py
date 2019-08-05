@@ -1,6 +1,6 @@
 from pytest import fixture
 
-from graph_traversal import BinaryNode, recursive_traverse
+from graph_traversal import BinaryNode, recursive_traverse, depth_first_traverse, Stack, FIFOQueue
 
 
 @fixture
@@ -20,6 +20,20 @@ def graph():
     )
 
 
+def test_stack():
+    stack = Stack()
+    stack.append(1)
+    stack.append(2)
+    assert list(stack) == [2, 1]
+
+
+def test_fifo_queue():
+    queue = FIFOQueue()
+    queue.append(1)
+    queue.append(2)
+    assert list(queue) == [1, 2]
+
+
 def test_binary_node_is_leaf():
     root = BinaryNode(
         BinaryNode(),
@@ -33,4 +47,10 @@ def test_binary_node_is_leaf():
 def test_recursive_traverse(graph):
     order = []
     recursive_traverse(graph, lambda bn: order.append(bn.attributes))
+    assert order == [0, 1, 3, 4, 2, 5, 6]
+
+
+def test_depth_first_traverse(graph):
+    order = []
+    depth_first_traverse(graph, lambda bn: order.append(bn.attributes))
     assert order == [0, 1, 3, 4, 2, 5, 6]
